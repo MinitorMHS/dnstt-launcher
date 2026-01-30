@@ -1,0 +1,70 @@
+[
+    {
+        "Name":  "Default Server(Google)",
+        "Address":  "8.8.8.8"
+    },
+    {
+        "Name":  "CloudFlare DNS",
+        "Address":  "1.1.1.1"
+    },
+    {
+        "Name":  "AliDNS",
+        "Address":  "223.6.6.6"
+    },
+    {
+        "Name":  "Freenom",
+        "Address":  "80.80.80.80"
+    },
+    {
+        "Name":  "Verisign",
+        "Address":  "64.6.64.6"
+    },
+    {
+        "Name":  "DNS4EU",
+        "Address":  "86.54.11.1"
+    },
+    {
+        "Name":  "msk-ix",
+        "Address":  "62.76.76.62"
+    },
+    {
+        "Name":  "Rostelecom",
+        "Address":  "195.208.4.1"
+    },
+    {
+        "Name":  "OpenDNS",
+        "Address":  "208.67.222.222"
+    },
+    {
+        "Name":  "Quad9",
+        "Address":  "9.9.9.9"
+    },
+    {
+        "Name":  "dns.sb",
+        "Address":  "185.222.222.222"
+    },
+    {
+        "Name":  "Level3",
+        "Address":  "209.244.0.3"
+    },
+    {
+        "Name":  "Comodo Secure",
+        "Address":  "8.26.56.26"
+    },
+    {
+        "Name":  "Safe dns",
+        "Address":  "195.46.39.39"
+    },
+    {
+        "Name":  "Dyn dns",
+        "Address":  "216.146.35.35"
+    },
+    {
+        "Name":  "Njalla",
+        "Address":  "95.215.19.53"
+    },
+    {
+        "Name":  "Gcore",
+        "Address":  "95.85.95.85"
+    }
+]
