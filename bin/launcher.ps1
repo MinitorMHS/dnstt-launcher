@@ -32,6 +32,7 @@ $defaultSettings = @{
     Domain      = ""
     PubKey      = ""
     Port        = ""
+    ListenAddr  = "127.0.0.1"
     AutoRestart = $false
     RestartInt  = "5"
     RestartUnit = "Minutes"
@@ -61,6 +62,7 @@ function Load-Data {
             $rawSet = Get-Content $settingsFile -Raw -ErrorAction Stop
             $script:settings = $rawSet | ConvertFrom-Json
             
+            if (-not $script:settings.PSObject.Properties['ListenAddr']) { $script:settings | Add-Member -MemberType NoteProperty -Name "ListenAddr" -Value "127.0.0.1" }
             if (-not $script:settings.PSObject.Properties['AutoRestart']) { $script:settings | Add-Member -MemberType NoteProperty -Name "AutoRestart" -Value $false }
             if (-not $script:settings.PSObject.Properties['RestartInt']) { $script:settings | Add-Member -MemberType NoteProperty -Name "RestartInt" -Value "5" }
             if (-not $script:settings.PSObject.Properties['RestartUnit']) { $script:settings | Add-Member -MemberType NoteProperty -Name "RestartUnit" -Value "Minutes" }
@@ -320,7 +322,7 @@ function Show-DeleteWindow {
 function Show-SettingsWindow {
     $setForm = New-Object System.Windows.Forms.Form
     $setForm.Text = "Global Settings"
-    $setForm.Size = New-Object System.Drawing.Size(340, 360) 
+    $setForm.Size = New-Object System.Drawing.Size(340, 420) 
     $setForm.StartPosition = "CenterParent"
     $setForm.FormBorderStyle = "FixedDialog"
     $setForm.MaximizeBox = $false
@@ -332,27 +334,32 @@ function Show-SettingsWindow {
     $lblKey = New-Object System.Windows.Forms.Label; $lblKey.Text = "Public Key (Hex):"; $lblKey.Location = '20,80'; $lblKey.AutoSize=$true
     $txtKey = New-Object System.Windows.Forms.TextBox; $txtKey.Location = '20,100'; $txtKey.Size = '280,25'; $txtKey.Text = $script:settings.PubKey
 
-    $lblPort = New-Object System.Windows.Forms.Label; $lblPort.Text = "Local Port:"; $lblPort.Location = '20,140'; $lblPort.AutoSize=$true
-    $txtPort = New-Object System.Windows.Forms.TextBox; $txtPort.Location = '20,160'; $txtPort.Size = '100,25'; $txtPort.Text = $script:settings.Port
+    $lblHost = New-Object System.Windows.Forms.Label; $lblHost.Text = "Listen Host:"; $lblHost.Location = '20,140'; $lblHost.AutoSize=$true
+    $cmbHost = New-Object System.Windows.Forms.ComboBox; $cmbHost.Location = '20,160'; $cmbHost.Size = '140,25'; $cmbHost.DropDownStyle = 'DropDownList'
+    $cmbHost.Items.AddRange(@("127.0.0.1", "0.0.0.0"))
+    if ($cmbHost.Items.Contains($script:settings.ListenAddr)) { $cmbHost.SelectedItem = $script:settings.ListenAddr } else { $cmbHost.SelectedItem = "127.0.0.1" }
+
+    $lblPort = New-Object System.Windows.Forms.Label; $lblPort.Text = "Local Port:"; $lblPort.Location = '180,140'; $lblPort.AutoSize=$true
+    $txtPort = New-Object System.Windows.Forms.TextBox; $txtPort.Location = '180,160'; $txtPort.Size = '120,25'; $txtPort.Text = $script:settings.Port
 
     $chkRestart = New-Object System.Windows.Forms.CheckBox
     $chkRestart.Text = "Enable Auto-Restart"
-    $chkRestart.Location = '20,200'
+    $chkRestart.Location = '20,220'
     $chkRestart.AutoSize = $true
     $chkRestart.Checked = $script:settings.AutoRestart
 
     $lblInt = New-Object System.Windows.Forms.Label
     $lblInt.Text = "Interval:"
-    $lblInt.Location = '40,230'
+    $lblInt.Location = '40,250'
     $lblInt.AutoSize = $true
 
     $txtInt = New-Object System.Windows.Forms.TextBox
-    $txtInt.Location = '95,227'
+    $txtInt.Location = '95,247'
     $txtInt.Size = '40,25'
     $txtInt.Text = $script:settings.RestartInt
 
     $cmbUnit = New-Object System.Windows.Forms.ComboBox
-    $cmbUnit.Location = '145,227'
+    $cmbUnit.Location = '145,247'
     $cmbUnit.Size = '80,25'
     $cmbUnit.DropDownStyle = 'DropDownList'
     $cmbUnit.Items.AddRange(@("Seconds", "Minutes", "Hours"))
@@ -362,8 +369,8 @@ function Show-SettingsWindow {
         $cmbUnit.SelectedItem = "Minutes"
     }
 
-    $btnSave = New-Object System.Windows.Forms.Button; $btnSave.Text = "Save Settings"; $btnSave.Location = '200,280'; $btnSave.Size = '100,30'
-    $setForm.Controls.AddRange(@($lblDom, $txtDom, $lblKey, $txtKey, $lblPort, $txtPort, $chkRestart, $lblInt, $txtInt, $cmbUnit, $btnSave))
+    $btnSave = New-Object System.Windows.Forms.Button; $btnSave.Text = "Save Settings"; $btnSave.Location = '200,320'; $btnSave.Size = '100,30'
+    $setForm.Controls.AddRange(@($lblDom, $txtDom, $lblKey, $txtKey, $lblHost, $cmbHost, $lblPort, $txtPort, $chkRestart, $lblInt, $txtInt, $cmbUnit, $btnSave))
     $setForm.AcceptButton = $btnSave
 
     $chkRestart.Add_CheckedChanged({
@@ -383,6 +390,7 @@ function Show-SettingsWindow {
         }
 
         $script:settings.Domain = $d; $script:settings.PubKey = $k; $script:settings.Port = $p
+        $script:settings.ListenAddr = $cmbHost.SelectedItem
         $script:settings.AutoRestart = $chkRestart.Checked
         $script:settings.RestartInt  = $i
         $script:settings.RestartUnit = $cmbUnit.SelectedItem
@@ -433,7 +441,10 @@ function Start-Tunnel {
     $domain = $script:settings.Domain
     $pubKey = $script:settings.PubKey
     $port   = $script:settings.Port
-    $args = @("-udp", "$ip`:53", "-utls", "iOS_14", "-pubkey", "$pubKey", "$domain", "127.0.0.1:$port")
+    $listen = $script:settings.ListenAddr
+    if (-not $listen) { $listen = "127.0.0.1" }
+
+    $args = @("-udp", "$ip`:53", "-utls", "iOS_14", "-pubkey", "$pubKey", "$domain", "$listen`:$port")
     
     try {
         $global:dnsttProcess = Start-Process -FilePath "dnstt-client-windows.exe" -ArgumentList $args -NoNewWindow -PassThru
