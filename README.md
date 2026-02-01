@@ -23,8 +23,8 @@
 
 ### Recommended Clients:
 * **[v2rayN](https://github.com/2dust/v2rayN)**: A powerful GUI client for Windows supporting V2Ray, Xray, and Trove protocols.
-* **[Throne](https://github.com/Throne-Project/Throne)**: A specialized client designed for advanced tunneling and proxy management.
-* **[Clash / Clash Meta](https://github.com/MetaCubeX/Clash.Meta)**: A rule-based tunnel in Go with support for multiple protocols.
+* **[Throne](https://github.com/throneproj/Throne)**: A specialized client designed for advanced tunneling and proxy management.
+* **[Clash / Clash Meta](https://github.com/MetaCubeX/mihomo)**: A rule-based tunnel in Go with support for multiple protocols.
 
 ---
 
