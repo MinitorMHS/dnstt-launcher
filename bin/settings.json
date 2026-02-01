@@ -1,0 +1,9 @@
+{
+    "Domain":  "",
+    "RestartUnit":  "Minutes",
+    "ListenAddr":  "127.0.0.1",
+    "RestartInt":  "5",
+    "PubKey":  "",
+    "Port":  "",
+    "AutoRestart":  false
+}
