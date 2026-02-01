@@ -1,7 +1,7 @@
 [Setup]
 AppName=DNSTT Launcher
 AppVersion=1.0
-DefaultDirName={autopf}\DNSTT-Launcher
+DefaultDirName={userappdata}\DNSTT-Launcher
 DefaultGroupName=DNSTT Launcher
 OutputBaseFilename=DNSTT_Launcher_Setup
 Compression=lzma
@@ -27,6 +27,7 @@ Name: "{commondesktop}\DNSTT Launcher"; Filename: "{app}\run.vbs"; IconFilename:
 
 [Run]
 Description: "Launch DNSTT Launcher Now"; Flags: postinstall shellexec skipifsilent; Filename: "{app}\run.vbs"
+
 
 
 
