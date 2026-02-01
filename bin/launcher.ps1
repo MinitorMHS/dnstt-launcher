@@ -16,9 +16,15 @@ if (-not $newlyCreated) {
     exit
 }
 
-$jsonFile     = "dns_list.json"
-$settingsFile = "settings.json"
-$lastDnsFile  = "last_dns.txt"
+$appDataDir = Join-Path $env:LOCALAPPDATA "DNSTTLauncher"
+if (-not (Test-Path $appDataDir)) { 
+    New-Item -ItemType Directory -Path $appDataDir -Force | Out-Null 
+}
+
+$jsonFile     = Join-Path $appDataDir "dns_list.json"
+$settingsFile = Join-Path $appDataDir "settings.json"
+$lastDnsFile  = Join-Path $appDataDir "last_dns.txt"
+
 $iconFile     = "icon.ico"
 $global:dnsttProcess = $null
 
