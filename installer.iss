@@ -14,8 +14,6 @@ ArchitecturesInstallIn64BitMode=x64 arm64
 Source: "bin\launcher.ps1"; DestDir: "{app}\bin"; Flags: ignoreversion
 Source: "bin\dns_list.json"; DestDir: "{app}\bin"; Flags: ignoreversion
 Source: "bin\icon.ico"; DestDir: "{app}\bin"; Flags: ignoreversion
-Source: "bin\last-dns.txt"; DestDir: "{app}\bin"; Flags: ignoreversion
-Source: "bin\settings.json"; DestDir: "{app}\bin"; Flags: ignoreversion
 Source: "run.vbs"; DestDir: "{app}"; Flags: ignoreversion
 
 
@@ -29,5 +27,6 @@ Name: "{commondesktop}\DNSTT Launcher"; Filename: "{app}\run.vbs"; IconFilename:
 
 [Run]
 Description: "Launch DNSTT Launcher Now"; Flags: postinstall shellexec skipifsilent; Filename: "{app}\run.vbs"
+
 
 
