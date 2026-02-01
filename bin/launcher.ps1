@@ -135,8 +135,8 @@ if (Test-Path $lastDnsFile) {
 } elseif ($combo.Items.Count -gt 0) { $combo.SelectedIndex = 0 }
 
 $addBtn = New-Object System.Windows.Forms.Button
-$addBtn.Text = "➕" 
-$addBtn.Font = New-Object System.Drawing.Font("Segoe UI Symbol", 9) 
+$addBtn.Text = "+" 
+$addBtn.Font = New-Object System.Drawing.Font("Verdana", 14, [System.Drawing.FontStyle]::Bold) 
 $addBtn.Location = '305,43'
 $addBtn.Size = '28,28'
 $addBtn.ForeColor = [System.Drawing.Color]::White
@@ -147,8 +147,8 @@ $toolTip.SetToolTip($addBtn, "Add New DNS")
 $form.Controls.Add($addBtn)
 
 $delBtn = New-Object System.Windows.Forms.Button
-$delBtn.Text = "✖" 
-$delBtn.Font = New-Object System.Drawing.Font("Segoe UI Symbol", 10) 
+$delBtn.Text = "x" 
+$delBtn.Font = New-Object System.Drawing.Font("Verdana", 12, [System.Drawing.FontStyle]::Bold) 
 $delBtn.Location = '335,43'
 $delBtn.Size = '28,28'
 $delBtn.ForeColor = [System.Drawing.Color]::White
